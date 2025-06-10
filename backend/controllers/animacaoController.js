@@ -1,0 +1,265 @@
+import pool from "../config/database.js"
+
+export const getAnimacoes = async (req, res) => {
+  try {
+    const { page = 1, limit = 20, search, genero, status, orderBy } = req.query
+    const pageInt = parseInt(page, 10);
+    const limitInt = parseInt(limit, 10);
+
+    // Consulta básica
+    let query = `
+      SELECT a.*,
+             GROUP_CONCAT(DISTINCT g.id) as genero_ids,
+             GROUP_CONCAT(DISTINCT g.nome) as generos
+      FROM animacoes a
+      LEFT JOIN animacao_generos ag ON a.id = ag.animacao_id
+      LEFT JOIN generos g ON ag.genero_id = g.id
+      WHERE 1=1
+    `
+    const params = []
+
+    if (search) {
+      query += " AND (a.titulo LIKE ? OR a.titulo_original LIKE ?)"
+      params.push(`%${search}%`, `%${search}%`)
+    }
+
+    if (genero) {
+      query += " AND g.id = ?"
+      params.push(genero)
+    }
+
+    if (status) {
+      query += " AND a.status = ?"
+      params.push(status)
+    }
+
+    query += " GROUP BY a.id"
+
+    if (orderBy) {
+      query += ` ORDER BY a.${orderBy} DESC`
+    } else {
+      query += " ORDER BY a.created_at DESC"
+    }
+
+    // Usar valores literais para LIMIT e OFFSET para evitar o erro ER_WRONG_ARGUMENTS
+    query += ` LIMIT ${limitInt} OFFSET ${(pageInt - 1) * limitInt}`
+
+    const [animacoes] = await pool.execute(query, params)
+
+    // Formatar gêneros como array
+    animacoes.forEach(anime => {
+      if (anime.generos) {
+        anime.generos = anime.generos.split(',').map(g => g.trim());
+      } else {
+        anime.generos = [];
+      }
+      
+      if (anime.genero_ids) {
+        anime.genero_ids = anime.genero_ids.split(',').map(id => parseInt(id));
+      } else {
+        anime.genero_ids = [];
+      }
+    });
+
+    // Consulta para contar o total
+    let countQuery = `
+      SELECT COUNT(DISTINCT a.id) as total 
+      FROM animacoes a
+      LEFT JOIN animacao_generos ag ON a.id = ag.animacao_id
+      LEFT JOIN generos g ON ag.genero_id = g.id
+      WHERE 1=1
+    `;
+
+    if (search) {
+      countQuery += " AND (a.titulo LIKE ? OR a.titulo_original LIKE ?)"
+    }
+
+    if (genero) {
+      countQuery += " AND g.id = ?"
+    }
+
+    if (status) {
+      countQuery += " AND a.status = ?"
+    }
+
+    const [countResult] = await pool.execute(countQuery, params.slice(0))
+
+    res.json({
+      animacoes,
+      pagination: {
+        page: pageInt,
+        limit: limitInt,
+        total: countResult[0].total,
+        pages: Math.ceil(countResult[0].total / limitInt),
+      },
+    })
+  } catch (error) {
+    console.error("Erro ao buscar animações:", error)
+    res.status(500).json({ error: "Erro interno do servidor", details: error.message })
+  }
+}
+
+export const getAnimacaoById = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const [animacoes] = await pool.execute(
+      `SELECT a.*, 
+              GROUP_CONCAT(DISTINCT CONCAT(g.id, ':', g.nome, ':', g.cor)) as generos_info
+       FROM animacoes a
+       LEFT JOIN animacao_generos ag ON a.id = ag.animacao_id
+       LEFT JOIN generos g ON ag.genero_id = g.id
+       WHERE a.id = ?
+       GROUP BY a.id`,
+      [id],
+    )
+
+    if (animacoes.length === 0) {
+      return res.status(404).json({ error: "Animação não encontrada" })
+    }
+
+    const animacao = animacoes[0]
+    
+    // Estruturar os gêneros como objetos com id, nome e cor
+    animacao.generos = []
+    if (animacao.generos_info) {
+      animacao.generos = animacao.generos_info.split(",").map((g) => {
+        const [id, nome, cor] = g.split(":")
+        return { id: Number.parseInt(id), nome, cor }
+      });
+      delete animacao.generos_info;
+    }
+
+    // Buscar avaliações recentes
+    const [avaliacoes] = await pool.execute(
+      `SELECT a.*, u.nome as usuario_nome, u.avatar_url
+       FROM avaliacoes a
+       JOIN usuarios u ON a.usuario_id = u.id
+       WHERE a.animacao_id = ?
+       ORDER BY a.created_at DESC
+       LIMIT 5`,
+      [id],
+    )
+
+    animacao.avaliacoes_recentes = avaliacoes
+
+    // Buscar estatísticas de avaliação
+    const [statsResult] = await pool.execute(
+      `SELECT 
+         COUNT(*) as total_avaliacoes,
+         IFNULL(AVG(nota), 0) as nota_media,
+         COUNT(CASE WHEN nota = 5 THEN 1 END) as nota5,
+         COUNT(CASE WHEN nota = 4 THEN 1 END) as nota4,
+         COUNT(CASE WHEN nota = 3 THEN 1 END) as nota3,
+         COUNT(CASE WHEN nota = 2 THEN 1 END) as nota2,
+         COUNT(CASE WHEN nota = 1 THEN 1 END) as nota1
+       FROM avaliacoes WHERE animacao_id = ?`,
+      [id]
+    );
+
+    if (statsResult && statsResult[0]) {
+      animacao.total_avaliacoes = statsResult[0].total_avaliacoes
+      animacao.nota_media = Number(statsResult[0].nota_media).toFixed(1)
+      animacao.stats = {
+        distribuicao: {
+          5: statsResult[0].nota5,
+          4: statsResult[0].nota4,
+          3: statsResult[0].nota3,
+          2: statsResult[0].nota2,
+          1: statsResult[0].nota1,
+        }
+      }
+    }
+
+    res.json(animacao)
+  } catch (error) {
+    console.error("Erro ao buscar detalhes da animação:", error)
+    res.status(500).json({ error: "Erro interno do servidor" })
+  }
+}
+
+export const createAnimacao = async (req, res) => {
+  try {
+    const { generos, ...animacaoData } = req.body
+
+    const [result] = await pool.execute(
+      `INSERT INTO animacoes (titulo, titulo_original, sinopse, poster_url, banner_url, 
+       ano_lancamento, episodios, status, estudio, diretor) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        animacaoData.titulo,
+        animacaoData.titulo_original || null,
+        animacaoData.sinopse || null,
+        animacaoData.poster_url || null,
+        animacaoData.banner_url || null,
+        animacaoData.ano_lancamento || null,
+        animacaoData.episodios || 1,
+        animacaoData.status || "Finalizado",
+        animacaoData.estudio || null,
+        animacaoData.diretor || null,
+      ],
+    )
+
+    const animacaoId = result.insertId
+
+    for (const generoId of generos) {
+      await pool.execute("INSERT INTO animacao_generos (animacao_id, genero_id) VALUES (?, ?)", [animacaoId, generoId])
+    }
+
+    res.status(201).json({
+      message: "Animação criada com sucesso",
+      id: animacaoId,
+    })
+  } catch (error) {
+    res.status(500).json({ error: "Erro interno do servidor" })
+  }
+}
+
+export const updateAnimacao = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { generos, ...animacaoData } = req.body
+
+    await pool.execute(
+      `UPDATE animacoes SET titulo = ?, titulo_original = ?, sinopse = ?, 
+       poster_url = ?, banner_url = ?, ano_lancamento = ?, episodios = ?, 
+       status = ?, estudio = ?, diretor = ?, updated_at = CURRENT_TIMESTAMP
+       WHERE id = ?`,
+      [
+        animacaoData.titulo,
+        animacaoData.titulo_original || null,
+        animacaoData.sinopse || null,
+        animacaoData.poster_url || null,
+        animacaoData.banner_url || null,
+        animacaoData.ano_lancamento || null,
+        animacaoData.episodios || 1,
+        animacaoData.status || "Finalizado",
+        animacaoData.estudio || null,
+        animacaoData.diretor || null,
+        id,
+      ],
+    )
+
+    await pool.execute("DELETE FROM animacao_generos WHERE animacao_id = ?", [id])
+
+    for (const generoId of generos) {
+      await pool.execute("INSERT INTO animacao_generos (animacao_id, genero_id) VALUES (?, ?)", [id, generoId])
+    }
+
+    res.json({ message: "Animação atualizada com sucesso" })
+  } catch (error) {
+    res.status(500).json({ error: "Erro interno do servidor" })
+  }
+}
+
+export const deleteAnimacao = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    await pool.execute("DELETE FROM animacoes WHERE id = ?", [id])
+
+    res.json({ message: "Animação removida com sucesso" })
+  } catch (error) {
+    res.status(500).json({ error: "Erro interno do servidor" })
+  }
+}
