@@ -203,7 +203,7 @@ No terminal:
 
 ### 4. Administração (apenas admins)
 - Acesse o dashboard administrativo
-- Gerencie animações e usuários
+- Gerencie animações
 - Modere comentários
 
 ## 🧪 Dados de Teste
