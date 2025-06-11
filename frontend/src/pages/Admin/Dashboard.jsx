@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Users, Film, Star, MessageCircle, Plus, TrendingUp, Award, UserCheck, Activity } from "lucide-react"
+import { Users, Film, Star, MessageCircle, Plus, TrendingUp, Award, UserCheck, Activity, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +10,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import { statsAPI } from "@/lib/api"
 import { formatDate } from "@/lib/utils"
 import { NovaAnimacaoModal } from "@/components/NovaAnimacaoModal"
+import { GerenciarAnimacoesModal } from "@/components/GerenciarAnimacoesModal"
 
 export const AdminDashboard = () => {
   const { isAdmin } = useAuth()
@@ -34,6 +35,7 @@ export const AdminDashboard = () => {
   const [usuariosRecentes, setUsuariosRecentes] = useState([])
   const [loading, setLoading] = useState(true)
   const [showNovaAnimacaoModal, setShowNovaAnimacaoModal] = useState(false)
+  const [showGerenciarAnimacoesModal, setShowGerenciarAnimacoesModal] = useState(false)
 
   useEffect(() => {
     if (isAdmin && isAdmin()) {
@@ -66,6 +68,10 @@ export const AdminDashboard = () => {
     fetchDashboardData() // Recarregar estatísticas
   }
 
+  const handleAnimacaoUpdated = () => {
+    fetchDashboardData() // Recarregar estatísticas
+  }
+
   if (!isAdmin || !isAdmin()) {
     return (
       <div className="text-center py-12">
@@ -90,13 +96,23 @@ export const AdminDashboard = () => {
           <h1 className="text-3xl font-bold">Dashboard Administrativo</h1>
           <p className="text-muted-foreground">Gerencie a plataforma AnimaList</p>
         </div>
-        <Button 
-          className="gap-2"
-          onClick={() => setShowNovaAnimacaoModal(true)}
-        >
-          <Plus className="h-4 w-4" />
-          Nova Animação
-        </Button> 
+        <div className="flex gap-3">
+          <Button 
+            variant="outline"
+            className="gap-2"
+            onClick={() => setShowGerenciarAnimacoesModal(true)}
+          >
+            <Settings className="h-4 w-4" />
+            Gerenciar Animações
+          </Button>
+          <Button 
+            className="gap-2"
+            onClick={() => setShowNovaAnimacaoModal(true)}
+          >
+            <Plus className="h-4 w-4" />
+            Nova Animação
+          </Button>
+        </div>
       </div>
 
       {/* Cards de Estatísticas Principais */}
@@ -320,25 +336,40 @@ export const AdminDashboard = () => {
           <CardTitle>Ações Rápidas</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Button variant="outline" className="justify-start">
+          <Button 
+            variant="outline" 
+            className="justify-start gap-2"
+            onClick={() => setShowGerenciarAnimacoesModal(true)}
+          >
+            <Settings className="h-4 w-4" />
             Gerenciar Animações
           </Button>
-          <Button variant="outline" className="justify-start">
+          <Button variant="outline" className="justify-start gap-2">
+            <MessageCircle className="h-4 w-4" />
             Moderar Comentários
           </Button>
-          <Button variant="outline" className="justify-start">
+          <Button variant="outline" className="justify-start gap-2">
+            <Users className="h-4 w-4" />
             Gerenciar Usuários
           </Button>
-          <Button variant="outline" className="justify-start">
+          <Button variant="outline" className="justify-start gap-2">
+            <TrendingUp className="h-4 w-4" />
             Ver Relatórios
           </Button>
         </CardContent>
       </Card>
 
+      {/* Modais */}
       <NovaAnimacaoModal
         isOpen={showNovaAnimacaoModal}
         onClose={() => setShowNovaAnimacaoModal(false)}
         onSuccess={handleAnimacaoCreated}
+      />
+
+      <GerenciarAnimacoesModal
+        isOpen={showGerenciarAnimacoesModal}
+        onClose={() => setShowGerenciarAnimacoesModal(false)}
+        onSuccess={handleAnimacaoUpdated}
       />
     </div>
   )

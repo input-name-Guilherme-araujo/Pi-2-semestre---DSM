@@ -94,10 +94,6 @@
   @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
 }
 
-.loading-spinner {
-  @apply animate-spin rounded-full border-2 border-gray-300 border-t-primary;
-}
-
 /* Animações para o carrossel */
 .banner-slide-enter {
   opacity: 0;
@@ -131,10 +127,234 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Limitação de linhas */
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+/* ✅ SCROLLBAR PERSONALIZADA */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ✅ SCROLLBAR PARA MODO ESCURO */
+.dark .scrollbar-thin {
+  scrollbar-color: #4b5563 #1f2937;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* ✅ CLASSES PARA TRUNCAR TEXTO */
+.line-clamp-1 {
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* ✅ SCROLLBAR MAIS ELEGANTE (ALTERNATIVA) */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.7);
+}
+
+/* ✅ TRANSIÇÕES SUAVES */
+.scrollbar-smooth {
+  scroll-behavior: smooth;
+}
+
+/* ✅ HIDE SCROLLBAR MAS MANTER FUNCIONALIDADE */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅ ANIMAÇÕES DE FADE PARA MODAIS */
+.modal-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-fade-out {
+  animation: fadeOut 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* ✅ MELHORIAS DE RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+/* ✅ ESTILO PARA CAMPOS OBRIGATÓRIOS */
+.required-field::after {
+  content: " *";
+  color: #ef4444;
+}
+
+/* ✅ ANIMAÇÃO DE LOADING PERSONALIZADA */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ✅ ESTILOS PARA BADGES */
+.badge-status-em-exibicao {
+  @apply border-green-500 text-green-700 bg-green-50;
+}
+
+.badge-status-finalizado {
+  @apply border-blue-500 text-blue-700 bg-blue-50;
+}
+
+.badge-status-cancelado {
+  @apply border-red-500 text-red-700 bg-red-50;
+}
+
+.badge-status-pausado {
+  @apply border-yellow-500 text-yellow-700 bg-yellow-50;
+}
+
+.badge-status-em-breve {
+  @apply border-purple-500 text-purple-700 bg-purple-50;
+}
+
+/* ✅ DARK MODE PARA BADGES */
+.dark .badge-status-em-exibicao {
+  @apply border-green-400 text-green-300 bg-green-900/30;
+}
+
+.dark .badge-status-finalizado {
+  @apply border-blue-400 text-blue-300 bg-blue-900/30;
+}
+
+.dark .badge-status-cancelado {
+  @apply border-red-400 text-red-300 bg-red-900/30;
+}
+
+.dark .badge-status-pausado {
+  @apply border-yellow-400 text-yellow-300 bg-yellow-900/30;
+}
+
+.dark .badge-status-em-breve {
+  @apply border-purple-400 text-purple-300 bg-purple-900/30;
+}
+
+/* ✅ TRANSIÇÕES SUAVES PARA CARDS */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ ESTILO PARA FOCO EM ELEMENTOS */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* ✅ GRADIENTE PARA BACKGROUNDS */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

@@ -29,9 +29,9 @@ export const validateLogin = (req, res, next) => {
 
 export const validateAvaliacao = (req, res, next) => {
   const schema = Joi.object({
-    nota: Joi.number().min(1).max(5).required(), // Corrigir: era 0-10, mas deveria ser 1-5
+    nota: Joi.number().min(1).max(5).required(),
     comentario: Joi.string().max(1000).allow(""),
-    animacao_id: Joi.number().integer().positive().required() // ADICIONAR ESTA LINHA
+    animacao_id: Joi.number().integer().positive().required()
   })
 
   const { error } = schema.validate(req.body)
@@ -41,21 +41,29 @@ export const validateAvaliacao = (req, res, next) => {
   next()
 }
 
+// ✅ VALIDAÇÃO CORRIGIDA BASEADA NO SCHEMA DO BANCO
 export const validateAnimacao = (req, res, next) => {
   const schema = Joi.object({
     titulo: Joi.string().min(1).max(255).required(),
-    titulo_original: Joi.string().max(255).allow(""),
-    sinopse: Joi.string().allow(""),
-    poster_url: Joi.string().uri().allow(""),
-    banner_url: Joi.string().uri().allow(""),
+    titulo_original: Joi.string().max(255).allow("", null),
+    sinopse: Joi.string().allow("", null),
+    poster_url: Joi.string().uri().allow("", null),
+    banner_url: Joi.string().uri().allow("", null),
     ano_lancamento: Joi.number()
       .integer()
       .min(1900)
-      .max(new Date().getFullYear() + 5),
-    episodios: Joi.number().integer().min(1),
-    status: Joi.string().valid("Em exibição", "Finalizado", "Cancelado", "Anunciado"),
-    estudio: Joi.string().max(100).allow(""),
-    diretor: Joi.string().max(100).allow(""),
+      .max(new Date().getFullYear() + 5)
+      .allow(null),
+    episodios: Joi.number().integer().min(1).allow(null),
+    // ✅ BASEADO NO SCHEMA: status é ENUM com estes valores específicos
+    status: Joi.string().valid(
+      "Em exibição", 
+      "Finalizado", 
+      "Cancelado", 
+      "Anunciado"  // ✅ No banco é "Anunciado", não "Em breve"
+    ).allow("", null),
+    estudio: Joi.string().max(100).allow("", null),
+    diretor: Joi.string().max(100).allow("", null),
     generos: Joi.array().items(Joi.number().integer()).min(1).required(),
   })
 

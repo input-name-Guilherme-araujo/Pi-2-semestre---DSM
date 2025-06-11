@@ -41,7 +41,6 @@ export const getAnimacoes = async (req, res) => {
       query += " ORDER BY a.created_at DESC"
     }
 
-    // Usar valores literais para LIMIT e OFFSET para evitar o erro ER_WRONG_ARGUMENTS
     query += ` LIMIT ${limitInt} OFFSET ${(pageInt - 1) * limitInt}`
 
     const [animacoes] = await pool.execute(query, params)
@@ -178,10 +177,14 @@ export const getAnimacaoById = async (req, res) => {
   }
 }
 
+// ✅ CORRIGIDO: Baseado no schema real do banco
 export const createAnimacao = async (req, res) => {
   try {
     const { generos, ...animacaoData } = req.body
 
+    console.log("Criando animação:", animacaoData, "Gêneros:", generos)
+
+    // ✅ QUERY CORRIGIDA BASEADA NO SCHEMA REAL
     const [result] = await pool.execute(
       `INSERT INTO animacoes (titulo, titulo_original, sinopse, poster_url, banner_url, 
        ano_lancamento, episodios, status, estudio, diretor) 
@@ -202,8 +205,14 @@ export const createAnimacao = async (req, res) => {
 
     const animacaoId = result.insertId
 
-    for (const generoId of generos) {
-      await pool.execute("INSERT INTO animacao_generos (animacao_id, genero_id) VALUES (?, ?)", [animacaoId, generoId])
+    // Verificar se generos é array e não está vazio
+    if (generos && Array.isArray(generos) && generos.length > 0) {
+      for (const generoId of generos) {
+        await pool.execute(
+          "INSERT INTO animacao_generos (animacao_id, genero_id) VALUES (?, ?)", 
+          [animacaoId, generoId]
+        )
+      }
     }
 
     res.status(201).json({
@@ -211,19 +220,25 @@ export const createAnimacao = async (req, res) => {
       id: animacaoId,
     })
   } catch (error) {
+    console.error("Erro ao criar animação:", error)
     res.status(500).json({ error: "Erro interno do servidor" })
   }
 }
 
+// ✅ CORRIGIDO: Baseado no schema real do banco  
 export const updateAnimacao = async (req, res) => {
   try {
     const { id } = req.params
     const { generos, ...animacaoData } = req.body
 
+    console.log("Atualizando animação:", id, animacaoData, "Gêneros:", generos)
+
+    // ✅ QUERY CORRIGIDA - REMOVIDO trailer_url e duracao_episodio que não existem no schema
     await pool.execute(
-      `UPDATE animacoes SET titulo = ?, titulo_original = ?, sinopse = ?, 
-       poster_url = ?, banner_url = ?, ano_lancamento = ?, episodios = ?, 
-       status = ?, estudio = ?, diretor = ?, updated_at = CURRENT_TIMESTAMP
+      `UPDATE animacoes SET 
+       titulo = ?, titulo_original = ?, sinopse = ?, poster_url = ?, banner_url = ?, 
+       ano_lancamento = ?, episodios = ?, status = ?, estudio = ?, diretor = ?, 
+       updated_at = CURRENT_TIMESTAMP
        WHERE id = ?`,
       [
         animacaoData.titulo,
@@ -240,14 +255,23 @@ export const updateAnimacao = async (req, res) => {
       ],
     )
 
-    await pool.execute("DELETE FROM animacao_generos WHERE animacao_id = ?", [id])
+    // Atualizar gêneros se fornecidos
+    if (generos && Array.isArray(generos)) {
+      await pool.execute("DELETE FROM animacao_generos WHERE animacao_id = ?", [id])
 
-    for (const generoId of generos) {
-      await pool.execute("INSERT INTO animacao_generos (animacao_id, genero_id) VALUES (?, ?)", [id, generoId])
+      if (generos.length > 0) {
+        for (const generoId of generos) {
+          await pool.execute(
+            "INSERT INTO animacao_generos (animacao_id, genero_id) VALUES (?, ?)", 
+            [id, generoId]
+          )
+        }
+      }
     }
 
     res.json({ message: "Animação atualizada com sucesso" })
   } catch (error) {
+    console.error("Erro ao atualizar animação:", error)
     res.status(500).json({ error: "Erro interno do servidor" })
   }
 }
