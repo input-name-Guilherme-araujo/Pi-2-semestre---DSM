@@ -219,12 +219,6 @@ export const Explorar = () => {
               <Button onClick={clearFilters} variant="outline" className="w-full">
                 Limpar Filtros
               </Button>
-
-              {/* ✅ DEBUG FILTROS ATIVOS */}
-              <div className="text-xs text-muted-foreground space-y-1">
-                <p>Filtros ativos:</p>
-                <pre className="text-xs">{JSON.stringify(filters, null, 2)}</pre>
-              </div>
             </CardContent>
           </Card>
         </aside>

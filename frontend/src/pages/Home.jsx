@@ -69,11 +69,7 @@ export const Home = () => {
                 Explorar Animações
               </Button>
             </Link>
-            <Link to="/registro">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                Criar Conta
-              </Button>
-            </Link>
+            
           </div>
         </div>
       </section>

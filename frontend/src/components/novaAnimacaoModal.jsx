@@ -235,14 +235,16 @@ export const NovaAnimacaoModal = ({ isOpen, onClose, onSuccess }) => {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Status</label>
-                <Select 
-                  value={formData.status} 
-                  onChange={(e) => handleChange({ target: { name: 'status', value: e.target.value } })}
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   {statusOptions.map(status => (
                     <option key={status} value={status}>{status}</option>
                   ))}
-                </Select>
+                </select>
               </div>
             </div>
 
