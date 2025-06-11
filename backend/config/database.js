@@ -16,7 +16,7 @@ const config = {
   charset: "utf8mb4",
 }
 
-// Para produção no Vercel, pode ser necessário SSL
+
 if (process.env.NODE_ENV === "production") {
   config.ssl = {
     rejectUnauthorized: false,
