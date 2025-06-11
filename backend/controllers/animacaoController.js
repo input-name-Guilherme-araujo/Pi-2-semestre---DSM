@@ -6,7 +6,6 @@ export const getAnimacoes = async (req, res) => {
     const pageInt = parseInt(page, 10);
     const limitInt = parseInt(limit, 10);
 
-    // Consulta básica
     let query = `
       SELECT a.*,
              GROUP_CONCAT(DISTINCT g.id) as genero_ids,
@@ -45,7 +44,6 @@ export const getAnimacoes = async (req, res) => {
 
     const [animacoes] = await pool.execute(query, params)
 
-    // Formatar gêneros como array
     animacoes.forEach(anime => {
       if (anime.generos) {
         anime.generos = anime.generos.split(',').map(g => g.trim());
@@ -60,7 +58,6 @@ export const getAnimacoes = async (req, res) => {
       }
     });
 
-    // Consulta para contar o total
     let countQuery = `
       SELECT COUNT(DISTINCT a.id) as total 
       FROM animacoes a
@@ -119,7 +116,6 @@ export const getAnimacaoById = async (req, res) => {
 
     const animacao = animacoes[0]
     
-    // Estruturar os gêneros como objetos com id, nome e cor
     animacao.generos = []
     if (animacao.generos_info) {
       animacao.generos = animacao.generos_info.split(",").map((g) => {
@@ -129,7 +125,6 @@ export const getAnimacaoById = async (req, res) => {
       delete animacao.generos_info;
     }
 
-    // Buscar avaliações recentes
     const [avaliacoes] = await pool.execute(
       `SELECT a.*, u.nome as usuario_nome, u.avatar_url
        FROM avaliacoes a
@@ -142,7 +137,6 @@ export const getAnimacaoById = async (req, res) => {
 
     animacao.avaliacoes_recentes = avaliacoes
 
-    // Buscar estatísticas de avaliação
     const [statsResult] = await pool.execute(
       `SELECT 
          COUNT(*) as total_avaliacoes,
@@ -177,14 +171,12 @@ export const getAnimacaoById = async (req, res) => {
   }
 }
 
-// ✅ CORRIGIDO: Baseado no schema real do banco
 export const createAnimacao = async (req, res) => {
   try {
     const { generos, ...animacaoData } = req.body
 
     console.log("Criando animação:", animacaoData, "Gêneros:", generos)
 
-    // ✅ QUERY CORRIGIDA BASEADA NO SCHEMA REAL
     const [result] = await pool.execute(
       `INSERT INTO animacoes (titulo, titulo_original, sinopse, poster_url, banner_url, 
        ano_lancamento, episodios, status, estudio, diretor) 
@@ -205,7 +197,6 @@ export const createAnimacao = async (req, res) => {
 
     const animacaoId = result.insertId
 
-    // Verificar se generos é array e não está vazio
     if (generos && Array.isArray(generos) && generos.length > 0) {
       for (const generoId of generos) {
         await pool.execute(
@@ -225,7 +216,6 @@ export const createAnimacao = async (req, res) => {
   }
 }
 
-// ✅ CORRIGIDO: Baseado no schema real do banco  
 export const updateAnimacao = async (req, res) => {
   try {
     const { id } = req.params
@@ -233,7 +223,6 @@ export const updateAnimacao = async (req, res) => {
 
     console.log("Atualizando animação:", id, animacaoData, "Gêneros:", generos)
 
-    // ✅ QUERY CORRIGIDA - REMOVIDO trailer_url e duracao_episodio que não existem no schema
     await pool.execute(
       `UPDATE animacoes SET 
        titulo = ?, titulo_original = ?, sinopse = ?, poster_url = ?, banner_url = ?, 
@@ -255,7 +244,6 @@ export const updateAnimacao = async (req, res) => {
       ],
     )
 
-    // Atualizar gêneros se fornecidos
     if (generos && Array.isArray(generos)) {
       await pool.execute("DELETE FROM animacao_generos WHERE animacao_id = ?", [id])
 

@@ -12,7 +12,7 @@ export const getDashboardStats = async (req, res) => {
       "SELECT COUNT(*) as total FROM usuarios WHERE ativo = TRUE"
     )
 
-    // ✅ CORRIGIDO: Buscar total de avaliações sem JOIN
+    
     const [avaliacoesCount] = await pool.execute(
       "SELECT COUNT(*) as total FROM avaliacoes"
     )

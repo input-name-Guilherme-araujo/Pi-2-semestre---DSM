@@ -53,7 +53,7 @@ export const avaliacaoAPI = {
 export const listaAPI = {
   add: (data) => api.post("/lista", data),
   remove: (animacaoId) => api.delete(`/lista/${animacaoId}`),
-  getMinha: (params) => api.get("/lista/minha", { params }), // ✅ CORRIGIDO
+  getMinha: (params) => api.get("/lista/minha", { params }), //
 }
 
 export const generoAPI = {

@@ -41,7 +41,7 @@ export const validateAvaliacao = (req, res, next) => {
   next()
 }
 
-// ✅ VALIDAÇÃO CORRIGIDA BASEADA NO SCHEMA DO BANCO
+
 export const validateAnimacao = (req, res, next) => {
   const schema = Joi.object({
     titulo: Joi.string().min(1).max(255).required(),
@@ -55,12 +55,12 @@ export const validateAnimacao = (req, res, next) => {
       .max(new Date().getFullYear() + 5)
       .allow(null),
     episodios: Joi.number().integer().min(1).allow(null),
-    // ✅ BASEADO NO SCHEMA: status é ENUM com estes valores específicos
+    // 
     status: Joi.string().valid(
       "Em exibição", 
       "Finalizado", 
       "Cancelado", 
-      "Anunciado"  // ✅ No banco é "Anunciado", não "Em breve"
+      "Anunciado"  // 
     ).allow("", null),
     estudio: Joi.string().max(100).allow("", null),
     diretor: Joi.string().max(100).allow("", null),

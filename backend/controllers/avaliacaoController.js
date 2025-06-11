@@ -133,7 +133,7 @@ const updateNotaMedia = async (animacao_id) => {
 
     console.log("Dados calculados:", { media, total }) // Debug
 
-    // ✅ CORRIGIDO: Garantir que é número e não string
+    
     const notaMedia = media ? parseFloat(media) : 0
 
     await pool.execute(
