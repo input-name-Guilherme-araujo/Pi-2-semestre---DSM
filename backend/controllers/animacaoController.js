@@ -68,8 +68,7 @@ export const getAnimacoes = async (req, res) => {
 
     query += ` LIMIT ${limitInt} OFFSET ${(pageInt - 1) * limitInt}`
 
-    console.log("Query executada:", query)
-    console.log("Parâmetros:", params)
+    console.log("Executando query de busca de animações...")
 
     const [animacoes] = await pool.execute(query, params)
 

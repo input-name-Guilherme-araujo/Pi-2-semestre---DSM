@@ -14,16 +14,16 @@ O sistema foi desenvolvido utilizando **React** (Vite) no frontend, com componen
 - ✅ Avaliar com nota e comentário
 - ✅ Organizar listas pessoais
 - ✅ Busca avançada por título/gênero
-- ✅ Perfil personalizado
+- ✅ Perfil personalizado (Em Breve)
 - ✅ Sistema de filtros avançados
 - ✅ Interface responsiva e moderna
 
 ### Para Administradores:
 - ✅ Gerenciar animações (CRUD)
 - ✅ Moderar comentários (Em breve)
-- ✅ Gerenciar gêneros
+- ✅ Gerenciar gêneros 
 - ✅ Dashboard administrativo
-- ✅ Estatísticas da plataforma
+- ✅ Estatísticas da plataforma (Em Breve)
 
 
 ## 🚀 Tecnologias Utilizadas
@@ -204,7 +204,7 @@ No terminal:
 ### 4. Administração (apenas admins)
 - Acesse o dashboard administrativo
 - Gerencie animações
-- Modere comentários
+- Modere comentários (Em Breve)
 
 ## 🧪 Dados de Teste
 
@@ -224,10 +224,94 @@ Após executar `npm run seed`, você terá:
 - Death Note
 - My Hero Academia
 
+
+
+-------Adicione aqui as imagens----------
+
+## 📸 Screenshots do Sistema
+
+### 👤 Interface do Usuário
+
+#### Cadastro e Autenticação
+![Cadastro](./Documentação/User/CadastroAnimalist--1.png)
+
+#### Página Inicial
+![Home do Usuário](./Documentação/User/HomeUsuarioComum--2.png)
+
+#### Explorar Animações
+![Explorar](./Documentação/User/ExplorarUsuarioComum--3.png)
+
+#### Lançamentos Recentes
+![Lançamentos](./Documentação/User/LançamentosUsuarioComum--4.png)
+
+#### Minha Lista Pessoal
+![Minha Lista](./Documentação/User/MinhaListaUsuarioComum--5.png)
+
+#### Minhas Avaliações
+![Minhas Avaliações](./Documentação/User/MinhasAvaliaçõesUsuarioComum--6.png)
+
+#### Perfil do Usuário
+![Perfil](./Documentação/User/PerfilUsuarioComum--7.png)
+
+---
+
+### ⚙️ Interface Administrativa
+
+#### Dashboard Administrativo
+![Dashboard Admin](./Documentação/Admin/DashboardAdminAnimalist.png)
+
+#### Gerenciar Animações
+![Gerenciar Animações](./Documentação/Admin/GerenciarAnimaçõesAdminAnimalist.png)
+
+#### Editar Animações
+![Editar Animações](./Documentação/Admin/EditarAnimaçõesDashboardAdminAnimalist.png)
+
+#### Home Admin
+![Home Admin](./Documentação/Admin/HomeAnimalist--1.png)
+
+#### Explorar Admin
+![Explorar Admin](./Documentação/Admin/ExplorarAnimalist--2.png)
+
+#### Lançamentos Admin
+![Lançamentos Admin](./Documentação/Admin/LançamentosAnimalist--3.png)
+
+#### Minha Lista Admin
+![Minha Lista Admin](./Documentação/Admin/MinhaListaAnimalist.png)
+
+#### Minhas Avaliações Admin
+![Minhas Avaliações Admin](./Documentação/Admin/MinhasAvaliaõesAnimalist.png)
+
+---
+
+## 🎯 Principais Características Visuais
+
+### 🎨 Design System
+- **Interface moderna** com componentes shadcn/ui
+- **Layout responsivo** adaptável a diferentes telas
+- **Cores consistentes** seguindo o tema do projeto
+- **Tipografia clara** para melhor legibilidade
+- **Ícones intuitivos** da biblioteca Lucide React
+
+### 📱 Experiência do Usuário
+- **Navegação intuitiva** entre as seções
+- **Filtros avançados** para busca de animações
+- **Sistema de avaliação** com estrelas visuais
+- **Organização clara** das listas pessoais
+- **Feedback visual** para todas as ações
+
+### 🔧 Interface Administrativa
+- **Dashboard completo** com estatísticas
+- **Gerenciamento eficiente** de conteúdo
+- **Formulários validados** para entrada de dados
+- **Controles de acesso** diferenciados
+- **Relatórios visuais** (em desenvolvimento)
+
+---
+
 ## ✒️ Autores
 * **[ANDRÉ CORAL RODRIGUES](https://github.com/o0darkness0o)** - *Criação do Figma e Participação na documentação;*
-* **[BRUNO JOSÉ RODRIGUES](https://github.com/)** - *Participação da Documentação e do banco de dados;*
-* **[GUILHERME DE ARAUJO SILVA](https://github.com/input-name-Guilherme-araujo)** - *Criação do Front-End/Back-End, Criação do banco de dados e Participção da documentação;*
+* **[BRUNO JOSÉ RODRIGUES](https://github.com/)** - *Participação na Documentação e banco de dados;*
+* **[GUILHERME DE ARAUJO SILVA](https://github.com/input-name-Guilherme-araujo)** - *Criação do Front-End/Back-End, Criação do banco de dados e Participção na documentação;*
 * **[ESPEDITO DUARTE GONÇALVES MAIA](https://github.com/duarte-maia)** - *Participação Banco de dados e Documentação;*
 
 
