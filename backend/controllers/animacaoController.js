@@ -2,7 +2,17 @@ import pool from "../config/database.js"
 
 export const getAnimacoes = async (req, res) => {
   try {
-    const { page = 1, limit = 20, search, genero, status, orderBy } = req.query
+    const { 
+      page = 1, 
+      limit = 20, 
+      search, 
+      genero, 
+      status, 
+      ano_min, // ✅ NOVO PARÂMETRO PARA ANO MÍNIMO
+      orderBy,
+      order = "DESC"
+    } = req.query
+    
     const pageInt = parseInt(page, 10);
     const limitInt = parseInt(limit, 10);
 
@@ -27,20 +37,39 @@ export const getAnimacoes = async (req, res) => {
       params.push(genero)
     }
 
+    // ✅ FILTRO POR STATUS - SUPORTE A MÚLTIPLOS STATUS
     if (status) {
-      query += " AND a.status = ?"
-      params.push(status)
+      if (status.includes(',')) {
+        // Se contém vírgula, é uma lista de status
+        const statusList = status.split(',').map(s => s.trim())
+        const placeholders = statusList.map(() => '?').join(',')
+        query += ` AND a.status IN (${placeholders})`
+        params.push(...statusList)
+      } else {
+        // Status único
+        query += " AND a.status = ?"
+        params.push(status)
+      }
+    }
+
+    // ✅ FILTRO POR ANO MÍNIMO (PARA FINALIZADOS 2025+)
+    if (ano_min) {
+      query += " AND a.ano_lancamento >= ?"
+      params.push(parseInt(ano_min))
     }
 
     query += " GROUP BY a.id"
 
     if (orderBy) {
-      query += ` ORDER BY a.${orderBy} DESC`
+      query += ` ORDER BY a.${orderBy} ${order}`
     } else {
       query += " ORDER BY a.created_at DESC"
     }
 
     query += ` LIMIT ${limitInt} OFFSET ${(pageInt - 1) * limitInt}`
+
+    console.log("Query executada:", query)
+    console.log("Parâmetros:", params)
 
     const [animacoes] = await pool.execute(query, params)
 
@@ -58,6 +87,7 @@ export const getAnimacoes = async (req, res) => {
       }
     });
 
+    // ✅ QUERY DE CONTAGEM - ATUALIZADA PARA INCLUIR ano_min
     let countQuery = `
       SELECT COUNT(DISTINCT a.id) as total 
       FROM animacoes a
@@ -65,20 +95,38 @@ export const getAnimacoes = async (req, res) => {
       LEFT JOIN generos g ON ag.genero_id = g.id
       WHERE 1=1
     `;
+    
+    const countParams = []
 
     if (search) {
       countQuery += " AND (a.titulo LIKE ? OR a.titulo_original LIKE ?)"
+      countParams.push(`%${search}%`, `%${search}%`)
     }
 
     if (genero) {
       countQuery += " AND g.id = ?"
+      countParams.push(genero)
     }
 
     if (status) {
-      countQuery += " AND a.status = ?"
+      if (status.includes(',')) {
+        const statusList = status.split(',').map(s => s.trim())
+        const placeholders = statusList.map(() => '?').join(',')
+        countQuery += ` AND a.status IN (${placeholders})`
+        countParams.push(...statusList)
+      } else {
+        countQuery += " AND a.status = ?"
+        countParams.push(status)
+      }
     }
 
-    const [countResult] = await pool.execute(countQuery, params.slice(0))
+    // ✅ FILTRO POR ANO MÍNIMO NA CONTAGEM TAMBÉM
+    if (ano_min) {
+      countQuery += " AND a.ano_lancamento >= ?"
+      countParams.push(parseInt(ano_min))
+    }
+
+    const [countResult] = await pool.execute(countQuery, countParams)
 
     res.json({
       animacoes,

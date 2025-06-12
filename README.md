@@ -225,10 +225,10 @@ Após executar `npm run seed`, você terá:
 - My Hero Academia
 
 ## ✒️ Autores
-* **[André Coral Rodrigues](https://github.com/o0darkness0o)** - *Criação do Figma;*
-* **[Bruno](https://github.com/)** - *Criação dos diagramas Documentação;*
-* **[Guilherme de Araujo Silva](https://github.com/input-name-Guilherme-araujo)** - *Criação do Front-End e do Back-End e Alterações no banco;*
-* **[Espedito Duarte Gonçalves Maia](https://github.com/duarte-maia)** - *Banco de dados;*
+* **[ANDRÉ CORAL RODRIGUES](https://github.com/o0darkness0o)** - *Criação do Figma e Participação na documentação;*
+* **[BRUNO JOSÉ RODRIGUES](https://github.com/)** - *Participação da Documentação e do banco de dados;*
+* **[GUILHERME DE ARAUJO SILVA](https://github.com/input-name-Guilherme-araujo)** - *Criação do Front-End/Back-End, Criação do banco de dados e Participção da documentação;*
+* **[ESPEDITO DUARTE GONÇALVES MAIA](https://github.com/duarte-maia)** - *Participação Banco de dados e Documentação;*
 
 
 ## 🎉 Agradecimentos

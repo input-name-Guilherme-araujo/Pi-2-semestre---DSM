@@ -12,6 +12,7 @@ import { MinhaLista } from "./pages/MinhaLista"
 import { MinhasAvaliacoes } from "./pages/MinhasAvaliacoes"
 import { Perfil } from "./pages/Perfil"
 import { AdminDashboard } from "./pages/Admin/Dashboard"
+import { Lancamentos } from "@/pages/Lancamentos"
 
 function App() {
   return (
@@ -29,8 +30,9 @@ function App() {
               <Route path="/minha-lista" element={<MinhaLista />} />
               <Route path="/minhas-avaliacoes" element={<MinhasAvaliacoes />} />
               <Route path="/perfil" element={<Perfil />} />
-              <Route path="/lancamentos" element={<Explorar />} />
+              <Route path="/lancamentos" element={<Lancamentos />} />
               <Route path="/buscar" element={<Explorar />} />
+
               
               {/* ADICIONAR: Rota protegida para Dashboard Admin */}
               <Route 

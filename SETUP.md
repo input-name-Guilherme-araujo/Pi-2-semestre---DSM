@@ -9,7 +9,7 @@
 
 \`\`\`bash
 # Clone o repositório
-git clone <seu-repo>
+git clone <seu-repo> ou baixe diretamente pelo github
 cd animalist
 
 # Backend
