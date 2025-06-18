@@ -60,7 +60,7 @@ O Animalist é um projeto acadêmico, mas busca entregar uma experiência real d
 ### 1. Clone o repositório
 No terminal:
 
-"git clone https://github.com/seu-usuario/repositorio.git"
+"git clone https://github.com/input-name-Guilherme-araujo/Pi-2-semestre---DSM.git"
 
 "cd nomerepositorio"
 
