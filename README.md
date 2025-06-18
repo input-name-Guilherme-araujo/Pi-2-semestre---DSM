@@ -94,7 +94,7 @@ No terminal:
 
 
 #### Configure as variáveis de ambiente:
-.env do backend
+Crie o .env do backend utilizando a estrutura do .env.example
 
 #### Edite o arquivo `.env` com suas configurações:
 No arquivio .env do Backend:
