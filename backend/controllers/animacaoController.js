@@ -8,7 +8,7 @@ export const getAnimacoes = async (req, res) => {
       search, 
       genero, 
       status, 
-      ano_min, // ✅ NOVO PARÂMETRO PARA ANO MÍNIMO
+      ano_min, //  NOVO PARÂMETRO PARA ANO MÍNIMO
       orderBy,
       order = "DESC"
     } = req.query
@@ -37,7 +37,7 @@ export const getAnimacoes = async (req, res) => {
       params.push(genero)
     }
 
-    // ✅ FILTRO POR STATUS - SUPORTE A MÚLTIPLOS STATUS
+    //  FILTRO POR STATUS - SUPORTE A MÚLTIPLOS STATUS
     if (status) {
       if (status.includes(',')) {
         // Se contém vírgula, é uma lista de status
@@ -52,7 +52,7 @@ export const getAnimacoes = async (req, res) => {
       }
     }
 
-    // ✅ FILTRO POR ANO MÍNIMO (PARA FINALIZADOS 2025+)
+    //  FILTRO POR ANO MÍNIMO (PARA FINALIZADOS 2025+)
     if (ano_min) {
       query += " AND a.ano_lancamento >= ?"
       params.push(parseInt(ano_min))
@@ -86,7 +86,7 @@ export const getAnimacoes = async (req, res) => {
       }
     });
 
-    // ✅ QUERY DE CONTAGEM - ATUALIZADA PARA INCLUIR ano_min
+     
     let countQuery = `
       SELECT COUNT(DISTINCT a.id) as total 
       FROM animacoes a
@@ -119,7 +119,7 @@ export const getAnimacoes = async (req, res) => {
       }
     }
 
-    // ✅ FILTRO POR ANO MÍNIMO NA CONTAGEM TAMBÉM
+    
     if (ano_min) {
       countQuery += " AND a.ano_lancamento >= ?"
       countParams.push(parseInt(ano_min))

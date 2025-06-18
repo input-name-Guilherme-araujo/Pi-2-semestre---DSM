@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import helmet from "helmet"
-import rateLimit from "express-rate-limit"
+
 import dotenv from "dotenv"
 import statsRoutes from "./routes/stats.js"
 import authRoutes from "./routes/auth.js"
@@ -15,6 +15,8 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
+//  REMOVER TODO O BLOCO DE RATE LIMITING
+/*
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
@@ -23,6 +25,7 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 })
+*/
 
 // Middlewares de segurança
 app.use(
@@ -67,7 +70,7 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
-app.use(limiter)
+// app.use(limiter) // Descomente se quiser usar rate limiting
 app.use(express.json({ limit: "10mb" }))
 app.use(express.urlencoded({ extended: true, limit: "10mb" }))
 

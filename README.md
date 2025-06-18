@@ -226,7 +226,6 @@ Após executar `npm run seed`, você terá:
 
 
 
--------Adicione aqui as imagens----------
 
 ## 📸 Screenshots do Sistema
 
@@ -319,12 +318,10 @@ Após executar `npm run seed`, você terá:
 
 - Comunidade React e Node.js
 - Criadores do shadcn/ui
-- Todos os contribuidores do projeto
-
 - Agradecemos a todos os professores que nos ministraram o curso durante o segundo semestre, especialmente aos professores que nos ministraram as disciplinas fundamentais para o desenvolvimento desse projeto: 
 
 - **Prof. Jorge** - Engenharia de Software II;
-- **Prof. n** - 
+- **Prof. Neto** -  Desenvolvimento Web II
 - **Prof. Rodrigo** - Banco de dados (Relacional)
 ---
 
