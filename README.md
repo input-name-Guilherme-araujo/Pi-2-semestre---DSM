@@ -309,7 +309,7 @@ Após executar `npm run seed`, você terá:
 
 ## ✒️ Autores
 * **[ANDRÉ CORAL RODRIGUES](https://github.com/o0darkness0o)** - *Criação do Figma e Participação na documentação;*
-* **[BRUNO JOSÉ RODRIGUES](https://github.com/)** - *Participação na Documentação e banco de dados;*
+* **[BRUNO JOSÉ RODRIGUES](https://github.com/Bjoota)** - *Participação na Documentação e banco de dados;*
 * **[GUILHERME DE ARAUJO SILVA](https://github.com/input-name-Guilherme-araujo)** - *Criação do Front-End/Back-End, Criação do banco de dados e Participção na documentação;*
 * **[ESPEDITO DUARTE GONÇALVES MAIA](https://github.com/duarte-maia)** - *Participação Banco de dados e Documentação;*
 
