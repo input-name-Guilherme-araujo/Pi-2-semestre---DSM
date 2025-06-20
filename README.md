@@ -315,6 +315,39 @@ Após executar `npm run seed`, você terá:
 * **[ESPEDITO DUARTE GONÇALVES MAIA](https://github.com/duarte-maia)** - *Participação Banco de dados e Documentação;*
 
 
+
+## 🎯 Elevator Pitch
+
+[Elevator Pitch](https://youtu.be/cVeCFolr4io)
+
+### O Problema
+Atualmente, os fãs de anime precisam usar múltiplas plataformas para:
+- Descobrir novas animações
+- Organizar o que assistiram e pretendem assistir
+- Compartilhar opiniões e avaliações
+- Encontrar recomendações personalizadas
+
+### Nossa Solução
+O **AnimaList** é uma plataforma social completa que centraliza todas essas necessidades em um só lugar, oferecendo:
+
+### 🌟 Proposta de Valor
+- **Descoberta Inteligente**: Catálogo organizado com filtros avançados por gênero, ano e popularidade
+- **Organização Pessoal**: Listas customizáveis para controlar o que você assistiu, está assistindo ou quer assistir
+- **Comunidade Ativa**: Sistema de avaliações e comentários para compartilhar experiências
+- **Interface Moderna**: Design responsivo e intuitivo, focado na experiência do usuário
+
+### 🎯 Diferencial Competitivo
+- Foco específico no universo anime
+- Interface brasileira e acessível
+- Sistema de gerenciamento administrativo robusto
+- Tecnologias modernas garantindo performance e segurança
+
+### 🚀 Visão Futura
+Transformar o AnimaList na principal referência para a comunidade brasileira de anime, expandindo para recursos como recomendações por IA e integração com plataformas de streaming.
+
+**"Conectando pessoas através da paixão por anime, uma avaliação por vez."**
+
+
 ## 🎉 Agradecimentos
 
 - Comunidade React e Node.js
