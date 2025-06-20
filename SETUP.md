@@ -9,7 +9,8 @@
 
 \`\`\`bash
 # Clone o repositório
-git clone <seu-repo> ou baixe diretamente pelo github
+git clone <https://github.com/input-name-Guilherme-araujo/Pi-2-semestre---DSM> ou baixe diretamente pelo github
+
 cd animalist
 
 # Backend

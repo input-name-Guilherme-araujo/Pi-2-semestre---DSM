@@ -225,7 +225,8 @@ Após executar `npm run seed`, você terá:
 - My Hero Academia
 
 
-
+## 🏆 Figma do Projeto
+### 🥇 [Alta Fidelidade](https://www.figma.com/proto/RvecKbxlyBm4qnbfiyd9WG/Animalist-PI?node-id=0-1&t=68QxqAidBdEWmAh5-1)
 
 ## 📸 Screenshots do Sistema
 
