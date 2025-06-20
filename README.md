@@ -226,7 +226,7 @@ Após executar `npm run seed`, você terá:
 
 
 ## 🏆 Figma do Projeto
-### 🥇 [Alta Fidelidade](https://www.figma.com/proto/RvecKbxlyBm4qnbfiyd9WG/Animalist-PI?node-id=0-1&t=68QxqAidBdEWmAh5-1)
+### 🥇 [Alta Fidelidade](https://www.figma.com/proto/RvecKbxlyBm4qnbfiyd9WG/Animalist-PI?node-id=0-1&t=eDp81uOAIOEuvgeR-1)
 
 ## 📸 Screenshots do Sistema
 
