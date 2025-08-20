@@ -318,7 +318,7 @@ Após executar `npm run seed`, você terá:
 
 ## 🎯 Elevator Pitch
 
-[Elevator Pitch](https://youtu.be/cVeCFolr4io)
+[Elevator Pitch](link)
 
 ### O Problema
 Atualmente, os fãs de anime precisam usar múltiplas plataformas para:
